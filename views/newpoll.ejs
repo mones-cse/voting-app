@@ -1,12 +1,20 @@
-<html> 
+<html>
 <% include partials/head %>
-
-<body class="container">
-    <% include partials/nav %>
-    <div class="jumbotron text-center">
-        <h1>Make a new poll!</h1>
-
-Test</a></p>
-    </div>
-</body>
- </html>
+    <body class="container">
+        <% include partials/nav %>  
+            <div class="jumbotron ">            
+                <form method="POST" action="/newpoll" onsubmit='return ifMultipleOption();'>
+                    <h1>Make a new poll!</h1>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1" >Title</label>
+                        <input type="text" class="form-control"  placeholder="Enter poll title" name="title" id="title">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleTextarea">Options (seperated by new line):</label>
+                        <textarea class="form-control" rows="3" name="options" id="options"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>                
+            </div>
+    </body>   
+</html>
