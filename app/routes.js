@@ -57,18 +57,14 @@ module.exports= function(app){
              }
              if(poll){  
                   //find for existed option 
-                 var match = poll.options.filter(function(eachOption){
-                     return eachOption.name === req.body.pollSelectedValue;
-                 })
-
-                 
-                 if(match.length){
-                //if match update count 
-                
-                console.log('enterd');
-                    var index = poll.options.findIndex(function(eachOption){
+                  var index = poll.options.findIndex(function(eachOption){
                         return eachOption.name === req.body.pollSelectedValue;
                     })
+
+
+                 if(index>-1){
+                //if match update count                 
+                console.log('enterd');
                     poll.options[index].voteCount++;
                  }else{
                 //else insert new data 
