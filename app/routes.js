@@ -48,40 +48,31 @@ module.exports= function(app){
         })
     })
 
-    app.post('/voteAdd',function(req,res){
-        //console.log('?????',req.body);//{ pollId: '5880ecd26fe9991ef00a1523', pollSelectedValue: 'legand ' }
-        //find match
-         Poll.findOne({_id:req.body.pollId},function(err,poll){
-             if(err){
-                 throw err
-             }
-             if(poll){  
-                  //find for existed option 
-                  var index = poll.options.findIndex(function(eachOption){
-                        return eachOption.name === req.body.pollSelectedValue;
-                    })
-
-
-                 if(index>-1){
-                //if match update count                 
-                console.log('enterd');
-                    poll.options[index].voteCount++;
-                 }else{
-                //else insert new data 
-                    poll.options.push({name:req.body.pollSelectedValue,voteCount:0})
-                 }
-                 console.log(poll);
-                 //save 
+    app.post('/voteAdd', function (req, res) {
+        Poll.findById(req.body.pollId, function (err, poll) {
+            if (err) {
+                throw err
+            }
+            if (poll) {
+                var index = poll.options.findIndex(function (eachOption) {      //find for existed option                 
+                    return eachOption.name === req.body.pollSelectedValue;
+                })                
+                if (index > -1) {                                               //if match update count                                  
+                   poll.options[index].voteCount++;
+                } else {                                                        //else insert new data                     
+                    poll.options.push({ name: req.body.pollSelectedValue, voteCount: 0 })
+                }
+                poll.save(function(err,updatedPoll){
+                    if(err){
+                        throw err;
+                    }
+                    console.log(updatedPoll);
+                    res.render('pollDisplay',{poll:updatedPoll});                    
+                })
+                //save 
                 //reload 
-             }
-
-         })
-       
-       
-        
-        
-        
-        res.send('pollDisplay'+req.body.pollId);
+            }
+        })
     })
 
     app.post('/voteRemove',function(req,res){
