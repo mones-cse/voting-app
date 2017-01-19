@@ -49,7 +49,47 @@ module.exports= function(app){
     })
 
     app.post('/voteAdd',function(req,res){
-        console.log('?????',req.body);
+        //console.log('?????',req.body);//{ pollId: '5880ecd26fe9991ef00a1523', pollSelectedValue: 'legand ' }
+        //find match
+         Poll.findOne({_id:req.body.pollId},function(err,poll){
+             if(err){
+                 throw err
+             }
+             if(poll){  
+                  //find for existed option 
+                 var match = poll.options.filter(function(eachOption){
+                     return eachOption.name === req.body.pollSelectedValue;
+                 })
+
+                 
+                 if(match.length){
+                //if match update count 
+                
+                console.log('enterd');
+                    var index = poll.options.findIndex(function(eachOption){
+                        return eachOption.name === req.body.pollSelectedValue;
+                    })
+                    poll.options[index].voteCount++;
+                 }else{
+                //else insert new data 
+                    poll.options.push({name:req.body.pollSelectedValue,voteCount:0})
+                 }
+                 console.log(poll);
+                 //save 
+                //reload 
+             }
+
+         })
+       
+       
+        
+        
+        
+        res.send('pollDisplay'+req.body.pollId);
+    })
+
+    app.post('/voteRemove',function(req,res){
+        console.log('xxxx',req.body);
         res.send('pollDisplay'+req.body.pollData);
     })
 }

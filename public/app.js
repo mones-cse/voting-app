@@ -9,7 +9,6 @@ ifMultipleOption =function(){
    return match&&title;
 }
 
-
 sendPollInfo =function(){
      $.post("/voteAdd",{user: 'user',password: 'pass'}, function(data){
             if(data==='done')
@@ -46,3 +45,7 @@ displayDonut = function (myLabel, myData) {
         }
     });
 }
+
+$(function() {
+ 
+});
