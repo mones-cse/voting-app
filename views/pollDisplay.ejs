@@ -1,0 +1,41 @@
+<html> 
+<% include partials/head %>
+<body class="container">
+    <% include partials/nav %>
+    <div class="jumbotron text-center">
+      <div class="row">
+        <div class="col-sm-4 text-left">
+        <h2><%=poll.title%></h2>
+        <form method = "POST"  action="/voteAdd"  '>
+        <input type="hidden" name="pollId" value=<%= poll._id %>>
+          <div class="form-group">
+            <label for="sel1">I'd like to vote for...:</label>
+            <select class="form-control" id="sel1" name="pollSelectedValue">
+              <option value="" selected disabled>Please select an option</option>
+              <% for(var i=0;i<poll.options.length;i++){ %>
+                <option value="<%= poll.options[i]%>"><%=poll.options[i].name%></option>
+             <%}%>
+            </select>    
+          </div>
+          <input class="btn btn-primary btn-block" type="submit" value="Submit">
+        </form>        
+      </div>
+      <div class="col-sm-8">
+        <canvas id="myChart"></canvas>
+      </div>
+      </div>
+    </div>
+    <script>
+    var poll =<%- JSON.stringify(poll) %>
+    console.log(poll);
+     //var myLabel = ["M", "T", "W", "T", "F", "S", "S"];
+     var myLabel = poll.options.map(function(eachKey){
+       return eachKey.name;
+     })
+    var myData = poll.options.map(function(eachKey){
+       return eachKey.voteCount;
+     }) 
+    displayDonut(myLabel,myData);
+    </script>
+</body>
+</html>
