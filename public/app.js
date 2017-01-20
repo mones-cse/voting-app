@@ -46,6 +46,19 @@ displayDonut = function (myLabel, myData) {
     });
 }
 
+
+
 $(function() {
- 
+    //removePoll 
+    var pollId = $("#pollId").val()  
+    $('#removePoll').on("click",function(){
+        $.post( "/removePoll",{pollId:pollId},function(err,status){
+            console.log('???',status);
+            if(status== "success"){
+                console.log('gooooo');
+                 window.location.href = "/";
+            }
+        });
+    });
+    
 });

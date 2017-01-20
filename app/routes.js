@@ -38,10 +38,12 @@ module.exports= function(app){
     app.get('/poll/:id',function(req,res){     
         Poll.findById(req.params.id,function(err,poll){
             if(err){
-                throw err;
+                res.send('invalid input');
             }else{
                 if(poll){
                     res.render('pollDisplay',{poll:poll});
+                }else{
+                   
                 }
                  
             }
@@ -75,9 +77,13 @@ module.exports= function(app){
         })
     })
 
-    app.post('/voteRemove',function(req,res){
-        console.log('xxxx',req.body);
-        res.send('pollDisplay'+req.body.pollData);
+    app.post('/removePoll',function(req,res){
+        Poll.findByIdAndRemove(req.body.pollId,function(err){
+            if(err){
+                throw err;
+            }
+             res.redirect('/');
+        })       
     })
 }
 
