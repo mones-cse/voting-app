@@ -1,14 +1,15 @@
+require('./models/user');
 var Poll =require('./models/poll');
 
-module.exports= function(app){
+module.exports= function(app,passport){
    
-    app.get('/',function(req,res){
-        Poll.find({},function(err,polls){
-        if(err){
-            throw err;
-        }
-        res.render('home',{polls:polls});
-    })       
+    app.get('/', function (req, res) {
+        Poll.find({}, function (err, polls) {
+            if (err) {
+                throw err;
+            }
+            res.render('home', { polls: polls });
+        })
     })
 
     app.get('/newpoll',function(req,res){
@@ -85,6 +86,30 @@ module.exports= function(app){
              res.redirect('/');
         })       
     })
+
+     app.get('/profile', isLoggedin, function (req, res) {
+        res.render('profile', { user: req.user });
+    })
+
+    app.get('/logout', function (req, res) {
+        req.logout();
+        res.redirect('/');
+    })
+
+    app.get('/auth/facebook', passport.authenticate('facebook',{scope : ['email']}));
+    app.get('/auth/facebook/callback',
+        passport.authenticate('facebook', {
+            successRedirect: '/profile',
+            failureRedirect: '/'
+        }));
+
+
 }
 
 
+function isLoggedin(req, res, next) {
+    if (req.isAuthenticated()) {
+        return next();
+    }
+    res.redirect('/');
+}

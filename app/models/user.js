@@ -1,8 +1,13 @@
 const mongoose =require('mongoose');
 
-var userSchema = new mongoose.Schema({
-    title:String,
-    options:Array
-})
+var userSchema =mongoose.Schema({   
+    facebook:{
+        id:String,
+        token:String,
+        name:String,
+        email:String
+    }
+});
 
-module.exports= mongoose.model('User',userSchema,'users');
+
+module.exports =mongoose.model('User',userSchema,'users');
